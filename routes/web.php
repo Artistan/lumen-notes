@@ -1,16 +1,17 @@
 <?php
+/** @var $router \Laravel\Lumen\Routing\Router */
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It is a breeze. Simply tell Lumen the URIs it should respond to
-| and give it the Closure to call when that URI is requested.
-|
-*/
+$router->post('/notes', [
+    'uses' => 'NotesController@store',
+    'as' => 'store_note'
+]);
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
+//$router->group(['middleware' => 'auth'], function () use ($router) {
+//    $router->get('/', function () {
+//        // Uses Auth Middleware
+//    });
+//
+//    $router->get('user/profile', function () {
+//        // Uses Auth Middleware
+//    });
+//});

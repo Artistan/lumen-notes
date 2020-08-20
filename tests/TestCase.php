@@ -1,6 +1,8 @@
 <?php
 
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
+use App\Exceptions\Handler;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -11,6 +13,27 @@ abstract class TestCase extends BaseTestCase
      */
     public function createApplication()
     {
-        return require __DIR__.'/../bootstrap/app.php';
+        $this->app = require __DIR__.'/../bootstrap/app.php';
+        $this->disableExceptionHandling();
+        return $this->app;
+    }
+
+    /**
+     * To show the phpunit/dusk exceptions
+     */
+    protected function disableExceptionHandling()
+    {
+        $this->app->instance(ExceptionHandler::class, new class extends Handler {
+            public function __construct() {}
+
+            public function report(\Throwable $e)
+            {
+                // no-op
+            }
+
+            public function render($request, \Throwable $e) {
+                throw $e;
+            }
+        });
     }
 }

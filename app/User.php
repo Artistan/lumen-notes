@@ -29,4 +29,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = password_hash($value,PASSWORD_ARGON2ID);
+    }
+
 }
