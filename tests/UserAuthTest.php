@@ -5,14 +5,14 @@ use Laravel\Lumen\Testing\DatabaseMigrations;
 use \App\User;
 use \App\Note;
 
-class UserNoteTest extends TestCase
+class UserAuthTest extends TestCase
 {
     use DatabaseMigrations;
 
     /**
      * @test
      */
-    public function an_existing_user_can_add_a_note_test()
+    public function an_existing_user_can_log_in()
     {
         $user = new User([
             'name' => 'test',
@@ -25,28 +25,22 @@ class UserNoteTest extends TestCase
             'email' => 'test',
             'password' => 'lkadnodkflns'
         ]);
+
+        // redirect to notes.
         $response->assertResponseStatus(302);
-
-        $response = $this->post('/notes',[
-            'user_id' => 1,
-            'note' => 'test note here'
-        ]);
-
-        $response->assertResponseOk();
-        $this->assertEquals(1, Note::all()->count());
     }
 
     /**
      * @test
      */
-    public function not_a_user_cannot_add_a_note_test()
+    public function not_a_user_cannot_log_in()
     {
         $response = $this->post('/notes',[
             'user_id' => 1,
             'note' => 'test note here'
         ]);
 
+        // unauthorized
         $response->assertResponseStatus(401);
-        $this->assertEquals(0, Note::all()->count());
     }
 }

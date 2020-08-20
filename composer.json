@@ -7,7 +7,10 @@
     "require": {
         "php": "^7.2.5",
         "flipbox/lumen-generator": "^7.0",
+        "illuminate/cookie": "^7.25",
+        "illuminate/hashing": "^7.25",
         "illuminate/routing": "^7.25",
+        "illuminate/session": "^7.25",
         "laravel/lumen-framework": "^7.0"
     },
     "require-dev": {
