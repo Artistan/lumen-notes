@@ -49,7 +49,7 @@ $router->post('/notes/{note}', [
     'as' => 'note.update'
 ]);
 
-$router->delete('/notes/{note}', [
+$router->post('/notes/destroy/{note}', [
     'middleware' => 'auth',
     'uses' => 'NotesController@destroy',
     'as' => 'note.destroy'

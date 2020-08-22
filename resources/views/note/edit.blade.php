@@ -40,7 +40,7 @@
 
                     <hr>
 
-                    <form action=/{{ route('note.destroy') }}" method="delete">
+                    <form action="/notes/destroy/{{ $note->id??'' }}" method="post">
                         <div class="row">
                             <div class="col-sm-12">
                                 <button class="btn btn-danger btn-block btn-lg"><i class="fa fa-eraser"></i> Delete</button>
