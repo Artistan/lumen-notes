@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Middleware\RedirectIfAuthenticated;
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
+use Illuminate\Auth\Middleware\Authorize;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
@@ -48,6 +53,15 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
+// SessionManager registration https://stackoverflow.com/a/47055083/372215
+$app->singleton(Illuminate\Session\SessionManager::class, function () use ($app) {
+    return $app->loadComponent('session', Illuminate\Session\SessionServiceProvider::class, 'session');
+});
+
+$app->singleton('session.store', function () use ($app) {
+    return $app->loadComponent('session', Illuminate\Session\SessionServiceProvider::class, 'session.store');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Register Config Files
@@ -74,11 +88,17 @@ $app->configure('session');
 */
 
  $app->middleware([
+     \Illuminate\Session\Middleware\StartSession::class,
+
      //App\Http\Middleware\ExampleMiddleware::class
  ]);
 
  $app->routeMiddleware([
-     'auth' => App\Http\Middleware\Authenticate::class,
+     'auth' => Authenticate::class,
+     'auth.basic' => AuthenticateWithBasicAuth::class,
+     //'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+     'can' => Authorize::class,
+     'guest' => RedirectIfAuthenticated::class,
  ]);
 
 /*
@@ -92,9 +112,9 @@ $app->configure('session');
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
 $app->register(Illuminate\Session\SessionServiceProvider::class);
 $app->register(Illuminate\Cookie\CookieServiceProvider::class);
 $app->register(Illuminate\Hashing\HashServiceProvider::class);

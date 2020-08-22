@@ -14,6 +14,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use Authenticatable, Authorizable;
 
     /**
+     * The model uses timestamps
+     *
+     * @var bool
+     */
+    public $timestamps = true;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -28,7 +35,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password', 'remember_token',
     ];
 
     public function setPasswordAttribute($value)

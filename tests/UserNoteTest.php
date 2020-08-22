@@ -29,6 +29,7 @@ class UserNoteTest extends TestCase
 
         $response = $this->post('/notes',[
             'user_id' => 1,
+            'title' => 'test',
             'note' => 'test note here'
         ]);
 
@@ -43,6 +44,7 @@ class UserNoteTest extends TestCase
     {
         $response = $this->post('/notes',[
             'user_id' => 1,
+            'title' => 'test',
             'note' => 'test note here'
         ]);
 
